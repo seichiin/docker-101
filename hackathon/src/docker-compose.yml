@@ -1,0 +1,33 @@
+services:
+  products-db:
+    image: hackathon/products-db
+    build:
+      context: db/postgres
+    networks:
+      - app-net
+
+  products-api:
+    image: hackathon/products-api
+    build:
+      context: products-api/java
+    networks:
+      - app-net
+
+  stock-api:
+    image: hackathon/stock-api
+    build:
+      context: stock-api/golang
+    networks:
+      - app-net
+
+  web:
+    image: hackathon/web
+    build:
+      context: web/dotnet
+    ports:
+      - "8080:80"
+    networks:
+      - app-net
+
+networks:
+  app-net:

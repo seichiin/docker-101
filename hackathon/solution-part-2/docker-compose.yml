@@ -1,0 +1,26 @@
+services:
+
+  products-db:
+    image: hackathon/products-db
+    networks:
+      - app-net
+
+  products-api:
+    image: hackathon/products-api
+    networks:
+      - app-net
+
+  stock-api:
+    image: hackathon/stock-api
+    networks:
+      - app-net
+  
+  web:
+    image: hackathon/web
+    ports:
+      - "8080:80"
+    networks:
+      - app-net
+
+networks:
+  app-net:
