@@ -21,27 +21,28 @@
 
 # We need to create an empty directory at /cache.
 
+#
 FROM golang:1.15.14 as builder
-ENV CGO_ENABLED="0"
+ENV CGO_ENABLED=0
 
 WORKDIR /go/stock-api
 COPY . .
 
-ENV GOLANG_VERSION="1.15.14"
-ENV APP_VERSION="0.4.0"
-ENV CACHE_EXPIRY_SECONDS="45"
-ENV POSTGRES_CONNECTION_STRING="host=products-db port=5432 user=postgres password=widgetario dbname=postgres sslmode=disable"
-
 RUN chmod +x restore.sh && ./restore.sh
 RUN chmod +x build.sh && ./build.sh
 
-
+#
 FROM alpine:3.14
 
 WORKDIR /cache
 WORKDIR /app
 
 COPY --from=builder /server .
+
+ENV GOLANG_VERSION="1.15.14"
+ENV APP_VERSION="0.4.0"
+ENV CACHE_EXPIRY_SECONDS="45"
+ENV POSTGRES_CONNECTION_STRING="host=products-db port=5432 user=postgres password=widgetario dbname=postgres sslmode=disable"
 
 EXPOSE 8080
 
